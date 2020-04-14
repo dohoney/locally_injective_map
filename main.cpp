@@ -33,9 +33,20 @@ int main(int argc, char *argv[]){
     Eigen::VectorXi R,T;
     
     load_model(model_name,V,uv,F,P,R,T);
-    set_rotation_index(uv,F,R,0);
+
     //dxy
-    //R.setZero();
+    //note: this doesn't work for Weber_fig19
+    if (is_simple_polygon(P)) {
+        R.resize(P.rows());
+        R.setZero();
+    }
+    else {
+        set_rotation_index(uv, F, R, 0);
+    }
+   /* std::cout << "T:" << std::endl;
+    std::cout << T.transpose() << std::endl;
+    std::cout << "R:" << std::endl;
+    std::cout << R.transpose() << std::endl;*/
     //
     Eigen::MatrixXi Fn;
     locally_injective_map(V,F,P,R,T,uv,Fn);
